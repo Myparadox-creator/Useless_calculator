@@ -49,7 +49,7 @@ git clone https://github.com/Myparadox-creator/Useless_calculator.git
 cd Useless_calculator
 
 # Run with any local server (e.g. Node, Python, or Live Server)
-node server.js
+node scripts/server.js
 ```
 
 Then visit [http://localhost:8888](http://localhost:8888) in your browser.
