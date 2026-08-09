@@ -5,10 +5,1155 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CalcPro+ | Premium Scientific Mobile Calculator</title>
   <meta name="description" content="A state-of-the-art scientific mobile calculator featuring advanced trigonometry, logarithms, high-precision math, and VIP monetization tier.">
+  
+  <!-- Google Fonts Preconnect & Stylesheet -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/style.css">
+  
+  <style>
+    /* ==========================================================================
+       CalcPro - Modern Luxury Mobile Calculator Design System
+       ========================================================================== */
+
+    :root {
+      --bg-app: #080a10;
+      --bg-phone: #0e111a;
+      --bg-phone-border: rgba(255, 255, 255, 0.12);
+      --bg-card: rgba(22, 27, 43, 0.75);
+      --bg-card-glass: rgba(255, 255, 255, 0.03);
+      
+      --color-primary: #6366f1;
+      --color-primary-hover: #4f46e5;
+      --color-secondary: #06b6d4;
+      --color-accent: #ec4899;
+      --color-gold: #f59e0b;
+      --color-gold-glow: rgba(245, 158, 11, 0.35);
+      --color-success: #10b981;
+      --color-danger: #ef4444;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --btn-num-bg: rgba(255, 255, 255, 0.06);
+      --btn-num-hover: rgba(255, 255, 255, 0.12);
+      --btn-num-text: #f1f5f9;
+
+      --btn-fn-bg: rgba(99, 102, 241, 0.12);
+      --btn-fn-hover: rgba(99, 102, 241, 0.22);
+      --btn-fn-text: #818cf8;
+
+      --btn-op-bg: linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8));
+      --btn-op-hover: linear-gradient(135deg, rgba(99, 102, 241, 1), rgba(168, 85, 247, 1));
+      --btn-op-text: #ffffff;
+
+      --btn-eq-bg: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #6366f1 100%);
+      --btn-eq-glow: rgba(6, 182, 212, 0.4);
+
+      --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --shadow-phone: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px rgba(99, 102, 241, 0.15);
+      --shadow-btn: 0 4px 12px rgba(0, 0, 0, 0.25);
+      --radius-phone: 44px;
+      --radius-btn: 20px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-app);
+      background-image: 
+        radial-gradient(circle at 20% 15%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 85%, rgba(236, 72, 153, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================================================
+       App Container & Phone Frame
+       ========================================================================== */
+
+    .app-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .phone-shell {
+      width: 100%;
+      background: var(--bg-phone);
+      border: 4px solid var(--bg-phone-border);
+      border-radius: var(--radius-phone);
+      box-shadow: var(--shadow-phone);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(20px);
+      padding: 16px 18px 24px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .phone-shell.vip-active {
+      border-color: rgba(245, 158, 11, 0.4);
+      box-shadow: var(--shadow-phone), 0 0 50px rgba(245, 158, 11, 0.2);
+    }
+
+    /* Dynamic Island / Status Bar */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 4px 12px 14px;
+    }
+
+    .notch-island {
+      width: 90px;
+      height: 20px;
+      background: #000;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .island-camera {
+      width: 8px;
+      height: 8px;
+      background: #1a1f2c;
+      border-radius: 50%;
+      border: 1px solid #2e384d;
+    }
+
+    .island-sensor {
+      width: 5px;
+      height: 5px;
+      background: #0c1017;
+      border-radius: 50%;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Header & Meta Badges */
+    .calc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 0 4px;
+    }
+
+    .brand-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #fff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-badge .pro-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      -webkit-text-fill-color: #fff;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .phone-shell.vip-active .brand-badge .pro-tag {
+      background: linear-gradient(135deg, #f59e0b, #ec4899);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+    }
+
+    .quota-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .quota-pill:hover {
+      background: rgba(99, 102, 241, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .quota-pill.exhausted {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      animation: pulse-red 2s infinite;
+    }
+
+    .quota-pill.vip {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(236, 72, 153, 0.2));
+      border-color: rgba(245, 158, 11, 0.5);
+      color: #fde68a;
+    }
+
+    .quota-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+
+    .quota-pill.exhausted .quota-dot {
+      background: #ef4444;
+    }
+
+    .quota-pill.vip .quota-dot {
+      background: #f59e0b;
+      box-shadow: 0 0 8px #f59e0b;
+    }
+
+    @keyframes pulse-red {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(0.98); }
+    }
+
+    /* ==========================================================================
+       Calculator Screen / Display
+       ========================================================================== */
+
+    .screen-container {
+      background: rgba(14, 17, 26, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 24px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 140px;
+      position: relative;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .screen-indicators {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .mode-badge {
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mode-badge.active {
+      background: rgba(99, 102, 241, 0.25);
+      color: #a5b4fc;
+    }
+
+    .memory-indicator {
+      opacity: 0;
+      color: var(--color-secondary);
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+
+    .memory-indicator.active {
+      opacity: 1;
+    }
+
+    .expression-view {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      min-height: 26px;
+      text-align: right;
+      word-break: break-all;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin-bottom: 4px;
+      transition: color 0.2s ease;
+    }
+
+    .expression-view::-webkit-scrollbar {
+      display: none;
+    }
+
+    .result-view {
+      font-family: var(--font-mono);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      text-align: right;
+      line-height: 1.1;
+      word-break: break-all;
+      transition: font-size 0.15s ease, color 0.2s ease;
+    }
+
+    .result-view.error {
+      color: var(--color-danger);
+      font-size: 1.8rem;
+    }
+
+    /* ==========================================================================
+       Drawer Navigation Tabs (Basic / Scientific / Tape)
+       ========================================================================== */
+
+    .keypad-nav {
+      display: flex;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+      padding: 3px;
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .nav-tab {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 0;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .nav-tab.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-tab svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ==========================================================================
+       Keypads & Buttons Grid
+       ========================================================================== */
+
+    .keypads-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Scientific Section */
+    .scientific-drawer {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      overflow: hidden;
+      max-height: 200px;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease, margin 0.25s ease;
+    }
+
+    .scientific-drawer.collapsed {
+      max-height: 0;
+      opacity: 0;
+      margin-bottom: 0;
+      pointer-events: none;
+    }
+
+    /* Main Keypad */
+    .main-keypad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    /* Button Stylings */
+    .calc-btn {
+      height: 58px;
+      border: none;
+      border-radius: var(--radius-btn);
+      font-family: var(--font-sans);
+      font-size: 1.3rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), background 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-btn);
+    }
+
+    .calc-btn:active {
+      transform: scale(0.92);
+    }
+
+    .calc-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .calc-btn:active::after {
+      opacity: 1;
+    }
+
+    .btn-num {
+      background: var(--btn-num-bg);
+      color: var(--btn-num-text);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-num:hover {
+      background: var(--btn-num-hover);
+    }
+
+    .btn-fn {
+      background: var(--btn-fn-bg);
+      color: var(--btn-fn-text);
+      font-size: 0.95rem;
+      font-weight: 700;
+      border: 1px solid rgba(99, 102, 241, 0.15);
+    }
+
+    .btn-fn:hover {
+      background: var(--btn-fn-hover);
+    }
+
+    .btn-action {
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      font-size: 1.1rem;
+    }
+
+    .btn-action:hover {
+      background: rgba(239, 68, 68, 0.22);
+    }
+
+    .btn-operator {
+      background: var(--btn-op-bg);
+      color: var(--btn-op-text);
+      font-size: 1.4rem;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+    }
+
+    .btn-operator:hover {
+      background: var(--btn-op-hover);
+    }
+
+    .btn-equals {
+      background: var(--btn-eq-bg);
+      color: #ffffff;
+      font-size: 1.6rem;
+      box-shadow: 0 4px 20px var(--btn-eq-glow);
+      position: relative;
+    }
+
+    .btn-equals::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: calc(var(--radius-btn) + 2px);
+      background: linear-gradient(135deg, #06b6d4, #6366f1, #ec4899);
+      z-index: -1;
+      opacity: 0.6;
+      filter: blur(8px);
+      transition: opacity 0.3s;
+    }
+
+    .btn-equals:hover::before {
+      opacity: 1;
+    }
+
+    .scientific-drawer .calc-btn {
+      height: 42px;
+      font-size: 0.85rem;
+      border-radius: 12px;
+    }
+
+    /* ==========================================================================
+       History Drawer Overlay
+       ========================================================================== */
+
+    .history-overlay {
+      position: absolute;
+      top: 60px;
+      left: 18px;
+      right: 18px;
+      bottom: 24px;
+      background: rgba(14, 17, 26, 0.96);
+      backdrop-filter: blur(25px);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      transform: translateY(110%);
+      opacity: 0;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      pointer-events: none;
+    }
+
+    .history-overlay.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .history-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .history-back-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .history-back-btn:hover {
+      background: rgba(99, 102, 241, 0.25);
+      border-color: #6366f1;
+      color: #a5b4fc;
+    }
+
+    .history-clear-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .history-clear-btn:hover {
+      color: var(--color-danger);
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .history-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-right: 4px;
+    }
+
+    .history-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: right;
+    }
+
+    .history-item:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateX(-2px);
+    }
+
+    .history-item .hist-expr {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .history-item .hist-res {
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--color-secondary);
+    }
+
+    .history-empty {
+      margin: auto;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0;
+    }
+
+    .btn-return-calc {
+      margin-top: 14px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      color: #c7d2fe;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-return-calc:hover {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(168, 85, 247, 0.4));
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================================================
+       Monetization Modal & Paywall System
+       ========================================================================== */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 6, 12, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .paywall-modal {
+      background: #0f1322;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.25) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 32px;
+      width: 100%;
+      max-width: 420px;
+      padding: 28px 24px;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(99, 102, 241, 0.3);
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-backdrop.open .paywall-modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .paywall-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .paywall-close-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .paywall-badge-wrap {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .paywall-crown-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(236, 72, 153, 0.2));
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 30px;
+      color: #fde68a;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .paywall-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #ffffff 30%, #c7d2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .paywall-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .feature-list {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .feature-item svg {
+      width: 16px;
+      height: 16px;
+      color: var(--color-success);
+      flex-shrink: 0;
+    }
+
+    /* Pricing Tier Selector */
+    .tier-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tier-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .tier-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    .tier-card.selected {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: #6366f1;
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
+    }
+
+    .tier-tag {
+      position: absolute;
+      top: -10px;
+      right: 16px;
+      background: linear-gradient(135deg, #ec4899, #f59e0b);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .tier-info h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .tier-info p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .tier-price {
+      text-align: right;
+    }
+
+    .tier-price .price-val {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      font-family: var(--font-mono);
+    }
+
+    .tier-price .price-cycle {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+    }
+
+    /* Subscribe Button */
+    .paywall-cta {
+      width: 100%;
+      height: 52px;
+      background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+      border: none;
+      border-radius: 16px;
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.45);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-bottom: 12px;
+    }
+
+    .paywall-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(99, 102, 241, 0.6);
+    }
+
+    .paywall-cta:active {
+      transform: scale(0.98);
+    }
+
+    /* Promo Code Bar */
+    .promo-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .promo-input {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 8px 12px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .promo-input:focus {
+      border-color: #6366f1;
+    }
+
+    .promo-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 0 14px;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .promo-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .promo-feedback {
+      font-size: 0.75rem;
+      text-align: center;
+      min-height: 18px;
+      margin-bottom: 8px;
+    }
+
+    .promo-feedback.success {
+      color: var(--color-success);
+    }
+
+    .promo-feedback.error {
+      color: var(--color-danger);
+    }
+
+    .paywall-footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .footer-link {
+      color: var(--text-dim);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover {
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       Checkout Modal
+       ========================================================================== */
+
+    .checkout-modal {
+      background: #111524;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 30px;
+      width: 100%;
+      max-width: 400px;
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
+    }
+
+    .checkout-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .checkout-summary {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 18px;
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .pay-method-btn {
+      flex: 1;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .pay-method-btn.selected {
+      background: #fff;
+      color: #000;
+    }
+
+    .pay-confirm-btn {
+      width: 100%;
+      height: 50px;
+      background: var(--color-success);
+      border: none;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .pay-confirm-btn:hover {
+      background: #059669;
+    }
+
+    /* Confetti Canvas */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ==========================================================================
+       Developer & Control Toolstrip
+       ========================================================================== */
+
+    .dev-toolstrip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: rgba(14, 17, 26, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 8px 14px;
+      backdrop-filter: blur(12px);
+      max-width: 440px;
+      width: 100%;
+    }
+
+    .dev-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-right: 4px;
+    }
+
+    .dev-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+
+    .dev-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .dev-btn.active {
+      background: rgba(99, 102, 241, 0.25);
+      border-color: #6366f1;
+      color: #a5b4fc;
+    }
+
+    /* ==========================================================================
+       Responsive Adaptations
+       ========================================================================== */
+
+    @media (max-width: 480px) {
+      body {
+        padding: 8px;
+      }
+
+      .phone-shell {
+        border-radius: 36px;
+        padding: 12px 14px 20px;
+      }
+
+      .calc-btn {
+        height: 52px;
+        font-size: 1.2rem;
+      }
+
+      .result-view {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -304,10 +1449,1027 @@
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="./js/sound-fx.js"></script>
-  <script src="./js/calculator-engine.js"></script>
-  <script src="./js/monetization-engine.js"></script>
-  <script src="./js/app.js"></script>
+  <!-- Embedded Application Engines -->
+  <script>
+    // ==========================================
+    // 1. Sound Effects Engine (Web Audio API)
+    // ==========================================
+    class SoundFX {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      toggleMute() {
+        this.muted = !this.muted;
+        return this.muted;
+      }
+
+      playClick(type = 'number') {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const now = this.ctx.currentTime;
+
+        let freq = 600;
+        let decay = 0.04;
+        let typeWave = 'sine';
+
+        if (type === 'operator') {
+          freq = 900;
+          decay = 0.05;
+        } else if (type === 'function') {
+          freq = 1100;
+          decay = 0.06;
+        } else if (type === 'action') {
+          freq = 450;
+          decay = 0.08;
+          typeWave = 'triangle';
+        } else if (type === 'equals') {
+          freq = 780;
+          decay = 0.09;
+        }
+
+        osc.type = typeWave;
+        osc.frequency.setValueAtTime(freq, now);
+        osc.frequency.exponentialRampToValueAtTime(freq * 0.5, now + decay);
+
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + decay);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + decay);
+      }
+
+      playPaywallAlert() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        [160, 168].forEach(freq => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now);
+          osc.frequency.exponentialRampToValueAtTime(freq * 0.7, now + 0.35);
+
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.35);
+        });
+      }
+
+      playUpgradeFanfare() {
+        if (this.muted) return;
+        this.init();
+        if (!this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const startTime = now + idx * 0.08;
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, startTime);
+
+          gain.gain.setValueAtTime(0.18, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.25);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(startTime);
+          osc.stop(startTime + 0.25);
+        });
+
+        const bellOsc = this.ctx.createOscillator();
+        const bellGain = this.ctx.createGain();
+        const bellStart = now + 0.35;
+
+        bellOsc.type = 'sine';
+        bellOsc.frequency.setValueAtTime(2093.00, bellStart);
+        bellGain.gain.setValueAtTime(0.25, bellStart);
+        bellGain.gain.exponentialRampToValueAtTime(0.0001, bellStart + 0.8);
+
+        bellOsc.connect(bellGain);
+        bellGain.connect(this.ctx.destination);
+
+        bellOsc.start(bellStart);
+        bellOsc.stop(bellStart + 0.8);
+      }
+    }
+
+    // ==========================================
+    // 2. Scientific Calculator Engine
+    // ==========================================
+    class CalculatorEngine {
+      constructor() {
+        this.angleMode = 'DEG';
+        this.memoryValue = 0;
+      }
+
+      setAngleMode(mode) {
+        if (mode === 'DEG' || mode === 'RAD') {
+          this.angleMode = mode;
+        }
+      }
+
+      toggleAngleMode() {
+        this.angleMode = this.angleMode === 'DEG' ? 'RAD' : 'DEG';
+        return this.angleMode;
+      }
+
+      factorial(n) {
+        if (n < 0 || !Number.isInteger(n)) return NaN;
+        if (n === 0 || n === 1) return 1;
+        if (n > 170) return Infinity;
+        let result = 1;
+        for (let i = 2; i <= n; i++) {
+          result *= i;
+        }
+        return result;
+      }
+
+      cleanNumber(num) {
+        if (isNaN(num)) return 'Error';
+        if (!isFinite(num)) return num > 0 ? 'Infinity' : '-Infinity';
+        if (Math.abs(num) < 1e-15) return 0;
+        return parseFloat(num.toPrecision(12));
+      }
+
+      evaluate(rawExpr) {
+        if (!rawExpr || rawExpr.trim() === '') return 0;
+
+        let expr = rawExpr;
+        expr = expr.replace(/×/g, '*')
+                   .replace(/÷/g, '/')
+                   .replace(/−/g, '-')
+                   .replace(/π/g, `(${Math.PI})`)
+                   .replace(/\be\b/g, `(${Math.E})`);
+
+        expr = expr.replace(/(\d+(\.\d+)?)%/g, '($1/100)');
+
+        expr = expr.replace(/(\d+(\.\d+)?|\([^()]+\))!/g, (match, p1) => {
+          return `this.factorial(${p1})`;
+        });
+
+        while (expr.includes('^')) {
+          const powRegex = /([a-zA-Z0-9_.]+|\([^()]+\))\^([a-zA-Z0-9_.]+|\([^()]+\))/;
+          if (!powRegex.test(expr)) break;
+          expr = expr.replace(powRegex, 'Math.pow($1, $2)');
+        }
+
+        expr = expr.replace(/√\s*(\([^()]+\)|\d+(\.\d+)?)/g, 'Math.sqrt($1)');
+        expr = expr.replace(/∛\s*(\([^()]+\)|\d+(\.\d+)?)/g, 'Math.cbrt($1)');
+
+        expr = expr.replace(/\blog\s*\(/g, 'Math.log10(');
+        expr = expr.replace(/\bln\s*\(/g, 'Math.log(');
+
+        const isDeg = this.angleMode === 'DEG';
+        const toRad = isDeg ? `*(Math.PI/180)` : '';
+        const fromRad = isDeg ? `*(180/Math.PI)` : '';
+
+        expr = expr.replace(/\basin\s*\(([^()]+)\)/g, `(Math.asin($1)${fromRad})`);
+        expr = expr.replace(/\bacos\s*\(([^()]+)\)/g, `(Math.acos($1)${fromRad})`);
+        expr = expr.replace(/\batan\s*\(([^()]+)\)/g, `(Math.atan($1)${fromRad})`);
+
+        expr = expr.replace(/\bsin\s*\(([^()]+)\)/g, `Math.sin(($1)${toRad})`);
+        expr = expr.replace(/\bcos\s*\(([^()]+)\)/g, `Math.cos(($1)${toRad})`);
+        expr = expr.replace(/\btan\s*\(([^()]+)\)/g, `Math.tan(($1)${toRad})`);
+
+        let openCount = (expr.match(/\(/g) || []).length;
+        let closeCount = (expr.match(/\)/g) || []).length;
+        while (openCount > closeCount) {
+          expr += ')';
+          closeCount++;
+        }
+
+        try {
+          const fn = new Function('Math', 'return ' + expr);
+          const res = fn.call(this, Math);
+          if (typeof res !== 'number' || isNaN(res)) return 'Error';
+          return this.cleanNumber(res);
+        } catch (err) {
+          return 'Error';
+        }
+      }
+
+      memoryClear() {
+        this.memoryValue = 0;
+        return this.memoryValue;
+      }
+
+      memoryRecall() {
+        return this.memoryValue;
+      }
+
+      memoryAdd(val) {
+        const num = parseFloat(val);
+        if (!isNaN(num)) this.memoryValue += num;
+        return this.memoryValue;
+      }
+
+      memorySubtract(val) {
+        const num = parseFloat(val);
+        if (!isNaN(num)) this.memoryValue -= num;
+        return this.memoryValue;
+      }
+    }
+
+    // ==========================================
+    // 3. Monetization Engine
+    // ==========================================
+    class MonetizationEngine {
+      constructor() {
+        this.FREE_LIMIT = 1;
+        this.STORAGE_KEY = 'calcpro_monetization_state';
+        this.state = this.loadState();
+        this.callbacks = {
+          onPaywall: [],
+          onStatusChange: []
+        };
+      }
+
+      loadState() {
+        try {
+          const saved = localStorage.getItem(this.STORAGE_KEY);
+          if (saved) return JSON.parse(saved);
+        } catch (e) {}
+        return {
+          calcCount: 0,
+          isSubscribed: false,
+          subscriptionTier: 'free',
+          subscribedAt: null,
+          activePromo: null
+        };
+      }
+
+      saveState() {
+        try {
+          localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state));
+        } catch (e) {}
+      }
+
+      isVIP() {
+        return this.state.isSubscribed || this.state.subscriptionTier !== 'free';
+      }
+
+      getRemainingFreeCalcs() {
+        if (this.isVIP()) return Infinity;
+        return Math.max(0, this.FREE_LIMIT - this.state.calcCount);
+      }
+
+      canCalculate() {
+        if (this.isVIP()) return true;
+        return this.state.calcCount < this.FREE_LIMIT;
+      }
+
+      attemptCalculation() {
+        if (this.canCalculate()) {
+          this.state.calcCount += 1;
+          this.saveState();
+          this.notifyStatusChange();
+          return { allowed: true, remaining: this.getRemainingFreeCalcs() };
+        } else {
+          this.triggerPaywall('quota_exceeded');
+          return { allowed: false, remaining: 0 };
+        }
+      }
+
+      subscribe(tier = 'annual') {
+        this.state.isSubscribed = true;
+        this.state.subscriptionTier = tier;
+        this.state.subscribedAt = new Date().toISOString();
+        this.saveState();
+        this.notifyStatusChange();
+      }
+
+      applyPromoCode(rawCode) {
+        const code = (rawCode || '').trim().toUpperCase();
+        if (code === 'FREEMATH' || code === 'DEVBYPASS' || code === 'TWIST' || code === 'ANTIGRAVITY') {
+          this.subscribe('lifetime');
+          this.state.activePromo = code;
+          this.saveState();
+          this.notifyStatusChange();
+          return { success: true, message: `Promo code "${code}" applied! VIP access unlocked. 🚀` };
+        }
+        if (code === 'TRIAL7') {
+          this.subscribe('trial');
+          this.state.activePromo = code;
+          this.saveState();
+          this.notifyStatusChange();
+          return { success: true, message: '7-Day VIP Free Trial Activated!' };
+        }
+        return { success: false, message: 'Invalid code. Try "FREEMATH" or "DEVBYPASS".' };
+      }
+
+      restorePurchase() {
+        this.subscribe('annual');
+        return { success: true, message: 'Purchases restored! Annual VIP active.' };
+      }
+
+      resetAccount() {
+        this.state = {
+          calcCount: 0,
+          isSubscribed: false,
+          subscriptionTier: 'free',
+          subscribedAt: null,
+          activePromo: null
+        };
+        this.saveState();
+        this.notifyStatusChange();
+      }
+
+      triggerPaywall(reason = 'quota_exceeded') {
+        this.callbacks.onPaywall.forEach(cb => cb(reason));
+      }
+
+      onPaywall(callback) {
+        this.callbacks.onPaywall.push(callback);
+      }
+
+      onStatusChange(callback) {
+        this.callbacks.onStatusChange.push(callback);
+      }
+
+      notifyStatusChange() {
+        const status = {
+          isVIP: this.isVIP(),
+          tier: this.state.subscriptionTier,
+          calcCount: this.state.calcCount,
+          remaining: this.getRemainingFreeCalcs(),
+          activePromo: this.state.activePromo
+        };
+        this.callbacks.onStatusChange.forEach(cb => cb(status));
+      }
+    }
+
+    // ==========================================
+    // 4. Confetti Cannon Engine
+    // ==========================================
+    class ConfettiCannon {
+      constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
+        this.particles = [];
+        this.animating = false;
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+      }
+
+      resize() {
+        if (!this.canvas) return;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+      }
+
+      burst(count = 90) {
+        if (!this.canvas || !this.ctx) return;
+        const colors = ['#6366f1', '#06b6d4', '#ec4899', '#f59e0b', '#10b981', '#ffffff'];
+        const originX = window.innerWidth / 2;
+        const originY = window.innerHeight / 2;
+
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 12 + 6;
+          this.particles.push({
+            x: originX,
+            y: originY,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 4,
+            size: Math.random() * 7 + 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * 360,
+            rotationSpeed: (Math.random() - 0.5) * 10,
+            opacity: 1,
+            life: 0,
+            maxLife: Math.random() * 50 + 60
+          });
+        }
+
+        if (!this.animating) {
+          this.animating = true;
+          this.loop();
+        }
+      }
+
+      loop() {
+        if (!this.animating || !this.ctx) return;
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+          const p = this.particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.25;
+          p.rotation += p.rotationSpeed;
+          p.life++;
+          p.opacity = 1 - p.life / p.maxLife;
+
+          this.ctx.save();
+          this.ctx.translate(p.x, p.y);
+          this.ctx.rotate((p.rotation * Math.PI) / 180);
+          this.ctx.fillStyle = p.color;
+          this.ctx.globalAlpha = Math.max(0, p.opacity);
+          this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          this.ctx.restore();
+
+          if (p.life >= p.maxLife) {
+            this.particles.splice(i, 1);
+          }
+        }
+
+        if (this.particles.length > 0) {
+          requestAnimationFrame(() => this.loop());
+        } else {
+          this.animating = false;
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+      }
+    }
+
+    // ==========================================
+    // 5. Main UI Controller
+    // ==========================================
+    class CalculatorApp {
+      constructor() {
+        this.currentExpr = '';
+        this.lastResult = null;
+        this.history = [];
+        this.selectedTier = 'annual';
+        
+        window.soundFX = new SoundFX();
+        window.calculatorEngine = new CalculatorEngine();
+        window.monetizationEngine = new MonetizationEngine();
+        this.confetti = new ConfettiCannon('confetti-canvas');
+
+        this.cacheDOM();
+        this.bindEvents();
+        this.initClock();
+        this.renderMonetizationStatus();
+      }
+
+      cacheDOM() {
+        this.phoneShell = document.getElementById('phone-shell');
+        this.expressionView = document.getElementById('expression-view');
+        this.resultView = document.getElementById('result-view');
+        this.angleModeBtn = document.getElementById('angle-mode-btn');
+        this.memoryIndicator = document.getElementById('memory-indicator');
+        this.proBadge = document.getElementById('pro-badge');
+        this.quotaPill = document.getElementById('quota-pill');
+        this.quotaText = document.getElementById('quota-text');
+        this.currentTimeEl = document.getElementById('current-time');
+
+        this.tabBasic = document.getElementById('tab-basic');
+        this.tabScientific = document.getElementById('tab-scientific');
+        this.tabHistory = document.getElementById('tab-history');
+        this.scientificDrawer = document.getElementById('scientific-drawer');
+        this.historyOverlay = document.getElementById('history-overlay');
+        this.historyList = document.getElementById('history-list');
+        this.historyClearBtn = document.getElementById('history-clear-btn');
+        this.historyBackBtn = document.getElementById('history-back-btn');
+
+        this.paywallBackdrop = document.getElementById('paywall-backdrop');
+        this.paywallCloseBtn = document.getElementById('paywall-close-btn');
+        this.paywallSubscribeBtn = document.getElementById('paywall-subscribe-btn');
+        this.tierCards = document.querySelectorAll('.tier-card');
+        this.promoInput = document.getElementById('promo-input');
+        this.promoApplyBtn = document.getElementById('promo-apply-btn');
+        this.promoFeedback = document.getElementById('promo-feedback');
+        this.restorePurchaseLink = document.getElementById('restore-purchase-link');
+
+        this.checkoutBackdrop = document.getElementById('checkout-backdrop');
+        this.checkoutCloseBtn = document.getElementById('checkout-close-btn');
+        this.checkoutConfirmBtn = document.getElementById('pay-confirm-btn');
+        this.checkoutTierName = document.getElementById('checkout-tier-name');
+        this.checkoutTierPrice = document.getElementById('checkout-tier-price');
+
+        this.devResetBtn = document.getElementById('dev-reset-btn');
+        this.devVipBtn = document.getElementById('dev-vip-btn');
+        this.devSoundBtn = document.getElementById('dev-sound-btn');
+        this.devPaywallBtn = document.getElementById('dev-paywall-btn');
+      }
+
+      bindEvents() {
+        document.querySelector('.keypads-wrapper').addEventListener('click', (e) => {
+          const btn = e.target.closest('.calc-btn');
+          if (!btn) return;
+          const val = btn.dataset.val;
+          const action = btn.dataset.action;
+
+          if (val) this.handleInput(val);
+          else if (action) this.handleAction(action);
+        });
+
+        window.addEventListener('keydown', (e) => this.handleKeyboard(e));
+
+        this.tabBasic.addEventListener('click', () => {
+          this.toggleScientific(false);
+          this.closeHistory();
+        });
+
+        this.tabScientific.addEventListener('click', () => {
+          this.toggleScientific(true);
+          this.closeHistory();
+        });
+
+        this.tabHistory.addEventListener('click', () => {
+          this.toggleHistory();
+        });
+
+        if (this.historyBackBtn) {
+          this.historyBackBtn.addEventListener('click', () => {
+            this.closeHistory();
+            window.soundFX.playClick('action');
+          });
+        }
+
+        this.historyClearBtn.addEventListener('click', () => this.clearHistory());
+
+        this.angleModeBtn.addEventListener('click', () => {
+          const mode = window.calculatorEngine.toggleAngleMode();
+          this.angleModeBtn.textContent = mode;
+          window.soundFX.playClick('action');
+        });
+
+        window.monetizationEngine.onPaywall(() => this.openPaywall());
+        window.monetizationEngine.onStatusChange(() => this.renderMonetizationStatus());
+
+        this.quotaPill.addEventListener('click', () => this.openPaywall());
+
+        this.paywallCloseBtn.addEventListener('click', () => this.closePaywall());
+        this.paywallBackdrop.addEventListener('click', (e) => {
+          if (e.target === this.paywallBackdrop) this.closePaywall();
+        });
+
+        this.tierCards.forEach(card => {
+          card.addEventListener('click', () => {
+            this.tierCards.forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            this.selectedTier = card.dataset.tier;
+            window.soundFX.playClick('number');
+          });
+        });
+
+        this.paywallSubscribeBtn.addEventListener('click', () => {
+          this.openCheckout(this.selectedTier);
+        });
+
+        this.promoApplyBtn.addEventListener('click', () => this.applyPromo());
+        this.promoInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') this.applyPromo();
+        });
+
+        this.restorePurchaseLink.addEventListener('click', () => {
+          const res = window.monetizationEngine.restorePurchase();
+          this.showPromoFeedback(res.message, true);
+          window.soundFX.playUpgradeFanfare();
+          this.confetti.burst(60);
+          setTimeout(() => this.closePaywall(), 1400);
+        });
+
+        this.checkoutCloseBtn.addEventListener('click', () => this.closeCheckout());
+        this.checkoutBackdrop.addEventListener('click', (e) => {
+          if (e.target === this.checkoutBackdrop) this.closeCheckout();
+        });
+
+        this.checkoutConfirmBtn.addEventListener('click', () => {
+          this.checkoutConfirmBtn.disabled = true;
+          this.checkoutConfirmBtn.innerHTML = '<span>Processing...</span>';
+
+          setTimeout(() => {
+            window.monetizationEngine.subscribe(this.selectedTier);
+            window.soundFX.playUpgradeFanfare();
+            this.confetti.burst(120);
+
+            this.checkoutConfirmBtn.disabled = false;
+            this.checkoutConfirmBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Subscribed!</span>';
+
+            setTimeout(() => {
+              this.closeCheckout();
+              this.closePaywall();
+            }, 1200);
+          }, 700);
+        });
+
+        this.devResetBtn.addEventListener('click', () => {
+          window.monetizationEngine.resetAccount();
+          this.renderMonetizationStatus();
+          this.resultView.textContent = '0';
+          this.expressionView.textContent = '';
+          this.currentExpr = '';
+          window.soundFX.playClick('action');
+        });
+
+        this.devVipBtn.addEventListener('click', () => {
+          if (window.monetizationEngine.isVIP()) {
+            window.monetizationEngine.resetAccount();
+          } else {
+            window.monetizationEngine.subscribe('annual');
+            window.soundFX.playUpgradeFanfare();
+            this.confetti.burst(80);
+          }
+        });
+
+        this.devSoundBtn.addEventListener('click', () => {
+          const isMuted = window.soundFX.toggleMute();
+          this.devSoundBtn.textContent = isMuted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
+          this.devSoundBtn.classList.toggle('active', isMuted);
+        });
+
+        this.devPaywallBtn.addEventListener('click', () => this.openPaywall());
+      }
+
+      initClock() {
+        const updateTime = () => {
+          const now = new Date();
+          let hours = now.getHours();
+          let minutes = now.getMinutes();
+          minutes = minutes < 10 ? '0' + minutes : minutes;
+          hours = hours < 10 ? '0' + hours : hours;
+          if (this.currentTimeEl) this.currentTimeEl.textContent = `${hours}:${minutes}`;
+        };
+        updateTime();
+        setInterval(updateTime, 30000);
+      }
+
+      handleInput(val) {
+        window.soundFX.playClick(this.isOperator(val) ? 'operator' : 'number');
+
+        if (this.lastResult !== null && !this.isOperator(val)) {
+          this.currentExpr = '';
+          this.lastResult = null;
+        } else if (this.lastResult !== null && this.isOperator(val)) {
+          this.currentExpr = String(this.lastResult);
+          this.lastResult = null;
+        }
+
+        this.currentExpr += val;
+        this.updateDisplay();
+      }
+
+      handleAction(action) {
+        switch (action) {
+          case 'clear':
+            window.soundFX.playClick('action');
+            this.currentExpr = '';
+            this.lastResult = null;
+            this.resultView.textContent = '0';
+            this.resultView.classList.remove('error');
+            this.expressionView.textContent = '';
+            break;
+
+          case 'backspace':
+            window.soundFX.playClick('action');
+            this.currentExpr = this.currentExpr.slice(0, -1);
+            this.updateDisplay();
+            break;
+
+          case 'negate':
+            window.soundFX.playClick('operator');
+            if (this.currentExpr) {
+              if (this.currentExpr.startsWith('-')) {
+                this.currentExpr = this.currentExpr.substring(1);
+              } else {
+                this.currentExpr = '-' + this.currentExpr;
+              }
+              this.updateDisplay();
+            }
+            break;
+
+          case 'sin':
+          case 'cos':
+          case 'tan':
+          case 'asin':
+          case 'acos':
+          case 'atan':
+          case 'log':
+          case 'ln':
+            window.soundFX.playClick('function');
+            this.currentExpr += `${action}(`;
+            this.updateDisplay();
+            break;
+
+          case 'sqrt':
+            window.soundFX.playClick('function');
+            this.currentExpr += '√(';
+            this.updateDisplay();
+            break;
+
+          case 'cbrt':
+            window.soundFX.playClick('function');
+            this.currentExpr += '∛(';
+            this.updateDisplay();
+            break;
+
+          case 'sqr':
+            window.soundFX.playClick('function');
+            this.currentExpr += '^2';
+            this.updateDisplay();
+            break;
+
+          case 'pow':
+            window.soundFX.playClick('function');
+            this.currentExpr += '^';
+            this.updateDisplay();
+            break;
+
+          case 'pi':
+            window.soundFX.playClick('number');
+            this.currentExpr += 'π';
+            this.updateDisplay();
+            break;
+
+          case 'e':
+            window.soundFX.playClick('number');
+            this.currentExpr += 'e';
+            this.updateDisplay();
+            break;
+
+          case 'fact':
+            window.soundFX.playClick('function');
+            this.currentExpr += '!';
+            this.updateDisplay();
+            break;
+
+          case 'mc':
+            window.calculatorEngine.memoryClear();
+            this.memoryIndicator.classList.remove('active');
+            window.soundFX.playClick('action');
+            break;
+
+          case 'mr':
+            const mem = window.calculatorEngine.memoryRecall();
+            this.currentExpr += mem;
+            this.updateDisplay();
+            window.soundFX.playClick('action');
+            break;
+
+          case 'mplus':
+            if (this.resultView.textContent && this.resultView.textContent !== 'Error') {
+              window.calculatorEngine.memoryAdd(this.resultView.textContent);
+              this.memoryIndicator.classList.add('active');
+              window.soundFX.playClick('action');
+            }
+            break;
+
+          case 'equals':
+            this.executeEquals();
+            break;
+        }
+      }
+
+      executeEquals() {
+        if (!this.currentExpr || this.currentExpr.trim() === '') return;
+
+        const attempt = window.monetizationEngine.attemptCalculation();
+
+        if (!attempt.allowed) {
+          window.soundFX.playPaywallAlert();
+          this.shakeDisplay();
+          return;
+        }
+
+        window.soundFX.playClick('equals');
+        const result = window.calculatorEngine.evaluate(this.currentExpr);
+
+        this.expressionView.textContent = this.currentExpr + ' =';
+        this.resultView.textContent = result;
+        this.resultView.classList.toggle('error', result === 'Error');
+
+        if (result !== 'Error') {
+          this.addHistory(this.currentExpr, result);
+          this.lastResult = result;
+        }
+      }
+
+      updateDisplay() {
+        if (!this.currentExpr) {
+          this.expressionView.textContent = '';
+          this.resultView.textContent = '0';
+          this.resultView.classList.remove('error');
+          return;
+        }
+
+        this.expressionView.textContent = this.currentExpr;
+        if (this.currentExpr.length > 12) {
+          this.resultView.style.fontSize = '1.8rem';
+        } else {
+          this.resultView.style.fontSize = '2.5rem';
+        }
+      }
+
+      shakeDisplay() {
+        this.phoneShell.animate([
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(-8px)' },
+          { transform: 'translateX(8px)' },
+          { transform: 'translateX(-5px)' },
+          { transform: 'translateX(5px)' },
+          { transform: 'translateX(0)' }
+        ], {
+          duration: 350,
+          easing: 'ease-in-out'
+        });
+      }
+
+      isOperator(char) {
+        return ['+', '−', '×', '÷', '^', '%'].includes(char);
+      }
+
+      handleKeyboard(e) {
+        if (this.paywallBackdrop.classList.contains('open') || this.checkoutBackdrop.classList.contains('open')) {
+          if (e.key === 'Escape') {
+            this.closePaywall();
+            this.closeCheckout();
+          }
+          return;
+        }
+
+        if (e.key >= '0' && e.key <= '9') this.handleInput(e.key);
+        else if (e.key === '.') this.handleInput('.');
+        else if (e.key === '+') this.handleInput('+');
+        else if (e.key === '-') this.handleInput('−');
+        else if (e.key === '*') this.handleInput('×');
+        else if (e.key === '/') { e.preventDefault(); this.handleInput('÷'); }
+        else if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); this.handleAction('equals'); }
+        else if (e.key === 'Backspace') this.handleAction('backspace');
+        else if (e.key === 'Escape') this.handleAction('clear');
+        else if (e.key === '(' || e.key === ')') this.handleInput(e.key);
+      }
+
+      toggleScientific(show) {
+        this.scientificDrawer.classList.toggle('collapsed', !show);
+        this.tabScientific.classList.toggle('active', show);
+        this.tabBasic.classList.toggle('active', !show);
+      }
+
+      toggleHistory() {
+        const isOpen = this.historyOverlay.classList.contains('open');
+        if (isOpen) this.closeHistory();
+        else {
+          this.historyOverlay.classList.add('open');
+          this.tabHistory.classList.add('active');
+        }
+      }
+
+      closeHistory() {
+        this.historyOverlay.classList.remove('open');
+        this.tabHistory.classList.remove('active');
+      }
+
+      addHistory(expr, result) {
+        this.history.unshift({ expr, result, time: new Date().toLocaleTimeString() });
+        if (this.history.length > 30) this.history.pop();
+        this.renderHistory();
+      }
+
+      clearHistory() {
+        this.history = [];
+        this.renderHistory();
+        window.soundFX.playClick('action');
+      }
+
+      renderHistory() {
+        if (this.history.length === 0) {
+          this.historyList.innerHTML = `
+            <div class="history-empty">
+              <p>No calculations recorded yet</p>
+              <button class="btn-return-calc" id="history-return-btn">← Return to Calculator</button>
+            </div>
+          `;
+          const returnBtn = document.getElementById('history-return-btn');
+          if (returnBtn) {
+            returnBtn.addEventListener('click', () => {
+              this.closeHistory();
+              window.soundFX.playClick('action');
+            });
+          }
+          return;
+        }
+
+        this.historyList.innerHTML = this.history.map((item, idx) => `
+          <div class="history-item" data-idx="${idx}">
+            <div class="hist-expr">${item.expr} =</div>
+            <div class="hist-res">${item.result}</div>
+          </div>
+        `).join('');
+
+        this.historyList.querySelectorAll('.history-item').forEach(itemEl => {
+          itemEl.addEventListener('click', () => {
+            const idx = itemEl.dataset.idx;
+            const item = this.history[idx];
+            if (item) {
+              this.currentExpr = String(item.result);
+              this.updateDisplay();
+              this.closeHistory();
+              window.soundFX.playClick('number');
+            }
+          });
+        });
+      }
+
+      openPaywall() {
+        this.promoFeedback.textContent = '';
+        this.paywallBackdrop.classList.add('open');
+      }
+
+      closePaywall() {
+        this.paywallBackdrop.classList.remove('open');
+      }
+
+      openCheckout(tier) {
+        const tierMap = {
+          weekly: { name: 'Weekly Pass', price: '$2.99' },
+          annual: { name: 'Annual VIP Pass (Best Value)', price: '$29.99' },
+          lifetime: { name: 'Lifetime Math God Pass', price: '$59.99' }
+        };
+
+        const details = tierMap[tier] || tierMap.annual;
+        this.checkoutTierName.textContent = details.name;
+        this.checkoutTierPrice.textContent = details.price;
+        this.checkoutBackdrop.classList.add('open');
+      }
+
+      closeCheckout() {
+        this.checkoutBackdrop.classList.remove('open');
+      }
+
+      applyPromo() {
+        const code = this.promoInput.value;
+        const res = window.monetizationEngine.applyPromoCode(code);
+        this.showPromoFeedback(res.message, res.success);
+
+        if (res.success) {
+          window.soundFX.playUpgradeFanfare();
+          this.confetti.burst(100);
+          setTimeout(() => this.closePaywall(), 1500);
+        } else {
+          window.soundFX.playPaywallAlert();
+        }
+      }
+
+      showPromoFeedback(msg, isSuccess) {
+        this.promoFeedback.textContent = msg;
+        this.promoFeedback.className = 'promo-feedback ' + (isSuccess ? 'success' : 'error');
+      }
+
+      renderMonetizationStatus() {
+        const isVIP = window.monetizationEngine.isVIP();
+        const remaining = window.monetizationEngine.getRemainingFreeCalcs();
+
+        if (isVIP) {
+          this.phoneShell.classList.add('vip-active');
+          this.proBadge.textContent = '👑 VIP';
+          this.quotaPill.className = 'quota-pill vip';
+          this.quotaText.textContent = 'Unlimited Math VIP';
+          this.devVipBtn.classList.add('active');
+        } else {
+          this.phoneShell.classList.remove('vip-active');
+          this.proBadge.textContent = 'FREE';
+          this.devVipBtn.classList.remove('active');
+
+          if (remaining > 0) {
+            this.quotaPill.className = 'quota-pill';
+            this.quotaText.textContent = `${remaining} Free Calc Left`;
+          } else {
+            this.quotaPill.className = 'quota-pill exhausted';
+            this.quotaText.textContent = 'Quota Used • Upgrade';
+          }
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.app = new CalculatorApp();
+    });
+  </script>
 </body>
 </html>
