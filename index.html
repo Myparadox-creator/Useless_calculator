@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CalcPro+ | Premium Scientific Mobile Calculator</title>
+  <meta name="description" content="A state-of-the-art scientific mobile calculator featuring advanced trigonometry, logarithms, high-precision math, and VIP monetization tier.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Celebration Confetti Particle Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="app-wrapper">
+    
+    <!-- Phone Shell Frame -->
+    <div class="phone-shell" id="phone-shell">
+      
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span id="current-time">09:41</span>
+        <div class="notch-island">
+          <div class="island-camera"></div>
+          <div class="island-sensor"></div>
+        </div>
+        <div class="status-icons">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.28 19.64 10.59 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 17h20v2H2zm1.15-4.05L4 11.47l.85 1.48 1.3-.75-.85-1.48H7v-1.5H5.3l.85-1.48-1.3-.75L4 8.53l-.85-1.48-1.3.75.85 1.48H1v1.5h1.7l-.85 1.48 1.3.74zm7.85-4.45h2v6h-2zm6.7 4.45l.85-1.48.85 1.48 1.3-.75-.85-1.48H20v-1.5h-1.7l.85-1.48-1.3-.75-.85 1.48-.85-1.48-1.3.75.85 1.48H14v1.5h1.7l-.85 1.48 1.3.74z"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17 5v14H7V5h10m0-2H7c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 3H8v10h8V6z"/></svg>
+        </div>
+      </div>
+
+      <!-- App Header & Monetization Status Pill -->
+      <div class="calc-header">
+        <div class="brand-badge">
+          <span>CalcPro</span>
+          <span class="pro-tag" id="pro-badge">FREE</span>
+        </div>
+        <div class="quota-pill" id="quota-pill" title="Click to view subscription options">
+          <span class="quota-dot"></span>
+          <span id="quota-text">1 Free Calc Left</span>
+        </div>
+      </div>
+
+      <!-- Main Display Screen -->
+      <div class="screen-container">
+        <div class="screen-indicators">
+          <span class="mode-badge active" id="angle-mode-btn" title="Toggle RAD/DEG">DEG</span>
+          <span class="memory-indicator" id="memory-indicator">M</span>
+        </div>
+        <div class="expression-view" id="expression-view"></div>
+        <div class="result-view" id="result-view">0</div>
+      </div>
+
+      <!-- Keypad Navigation Tabs -->
+      <div class="keypad-nav">
+        <button class="nav-tab active" id="tab-basic" data-mode="basic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+          Standard
+        </button>
+        <button class="nav-tab active" id="tab-scientific" data-mode="scientific">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Scientific
+        </button>
+        <button class="nav-tab" id="tab-history" data-mode="history">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Tape
+        </button>
+      </div>
+
+      <!-- Keypads Container -->
+      <div class="keypads-wrapper">
+        
+        <!-- Scientific Drawer Keypad -->
+        <div class="scientific-drawer" id="scientific-drawer">
+          <button class="calc-btn btn-fn" data-action="sin">sin</button>
+          <button class="calc-btn btn-fn" data-action="cos">cos</button>
+          <button class="calc-btn btn-fn" data-action="tan">tan</button>
+          <button class="calc-btn btn-fn" data-action="log">log</button>
+          <button class="calc-btn btn-fn" data-action="ln">ln</button>
+
+          <button class="calc-btn btn-fn" data-action="asin">asin</button>
+          <button class="calc-btn btn-fn" data-action="acos">acos</button>
+          <button class="calc-btn btn-fn" data-action="atan">atan</button>
+          <button class="calc-btn btn-fn" data-action="sqr">x²</button>
+          <button class="calc-btn btn-fn" data-action="pow">xʸ</button>
+
+          <button class="calc-btn btn-fn" data-action="sqrt">√</button>
+          <button class="calc-btn btn-fn" data-action="cbrt">∛</button>
+          <button class="calc-btn btn-fn" data-action="pi">π</button>
+          <button class="calc-btn btn-fn" data-action="e">e</button>
+          <button class="calc-btn btn-fn" data-action="fact">x!</button>
+
+          <button class="calc-btn btn-fn" data-val="(">(</button>
+          <button class="calc-btn btn-fn" data-val=")">)</button>
+          <button class="calc-btn btn-fn" data-action="mc">MC</button>
+          <button class="calc-btn btn-fn" data-action="mr">MR</button>
+          <button class="calc-btn btn-fn" data-action="mplus">M+</button>
+        </div>
+
+        <!-- Main Standard Keypad -->
+        <div class="main-keypad">
+          <button class="calc-btn btn-action" data-action="clear" id="btn-clear">AC</button>
+          <button class="calc-btn btn-fn" data-action="negate">±</button>
+          <button class="calc-btn btn-fn" data-val="%">%</button>
+          <button class="calc-btn btn-operator" data-val="÷">÷</button>
+
+          <button class="calc-btn btn-num" data-val="7">7</button>
+          <button class="calc-btn btn-num" data-val="8">8</button>
+          <button class="calc-btn btn-num" data-val="9">9</button>
+          <button class="calc-btn btn-operator" data-val="×">×</button>
+
+          <button class="calc-btn btn-num" data-val="4">4</button>
+          <button class="calc-btn btn-num" data-val="5">5</button>
+          <button class="calc-btn btn-num" data-val="6">6</button>
+          <button class="calc-btn btn-operator" data-val="−">−</button>
+
+          <button class="calc-btn btn-num" data-val="1">1</button>
+          <button class="calc-btn btn-num" data-val="2">2</button>
+          <button class="calc-btn btn-num" data-val="3">3</button>
+          <button class="calc-btn btn-operator" data-val="+">+</button>
+
+          <button class="calc-btn btn-num" data-val="0">0</button>
+          <button class="calc-btn btn-num" data-val=".">.</button>
+          <button class="calc-btn btn-fn" data-action="backspace">⌫</button>
+          <button class="calc-btn btn-equals" data-action="equals" id="btn-equals">=</button>
+        </div>
+
+      </div>
+
+      <!-- History Tape Overlay -->
+      <div class="history-overlay" id="history-overlay">
+        <div class="history-header">
+          <button class="history-back-btn" id="history-back-btn" title="Back to Calculator">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span>Back</span>
+          </button>
+          <div class="history-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Tape
+          </div>
+          <button class="history-clear-btn" id="history-clear-btn">Clear All</button>
+        </div>
+        <div class="history-list" id="history-list">
+          <div class="history-empty">
+            <p>No calculations recorded yet</p>
+            <button class="btn-return-calc" id="history-return-btn">← Return to Calculator</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Developer & Testing Toolstrip -->
+    <div class="dev-toolstrip">
+      <span class="dev-badge">Dev Sandbox:</span>
+      <button class="dev-btn" id="dev-reset-btn" title="Reset free calculation count to test paywall again">
+        🔄 Reset Quota
+      </button>
+      <button class="dev-btn" id="dev-vip-btn" title="Instantly toggle VIP subscription status">
+        👑 VIP Toggle
+      </button>
+      <button class="dev-btn" id="dev-sound-btn" title="Toggle audio clicks and effects">
+        🔊 Sound: ON
+      </button>
+      <button class="dev-btn" id="dev-paywall-btn" title="Force trigger paywall modal">
+        💎 Show Paywall
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Monetization Paywall Modal -->
+  <div class="modal-backdrop" id="paywall-backdrop">
+    <div class="paywall-modal">
+      <button class="paywall-close-btn" id="paywall-close-btn" aria-label="Close modal">✕</button>
+      
+      <div class="paywall-badge-wrap">
+        <div class="paywall-crown-badge">
+          👑 CalcPro VIP Pass
+        </div>
+      </div>
+
+      <h2 class="paywall-title">Unlock Unlimited Math</h2>
+      <p class="paywall-subtitle">
+        You've used your <strong>1 free calculation</strong>! Subscribe now to unlock unlimited operations, zero wait times, and high-precision scientific algorithms.
+      </p>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Unlimited Additions & Subtractions</strong> (No daily limits)</span>
+        </div>
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Quantum Trigonometry Engine</strong> (sin, cos, tan, ln, log)</span>
+        </div>
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>0.000000000001 HD Precision</strong> arithmetic</span>
+        </div>
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>VIP Gold Aesthetic & Tactile Sound FX</strong></span>
+        </div>
+      </div>
+
+      <!-- Pricing Tier Selector -->
+      <div class="tier-group">
+        <div class="tier-card" data-tier="weekly">
+          <div class="tier-info">
+            <h4>Weekly Pass</h4>
+            <p>Billed weekly, cancel anytime</p>
+          </div>
+          <div class="tier-price">
+            <div class="price-val">$2.99</div>
+            <div class="price-cycle">/ week</div>
+          </div>
+        </div>
+
+        <div class="tier-card selected" data-tier="annual">
+          <div class="tier-tag">70% OFF • POPULAR</div>
+          <div class="tier-info">
+            <h4>Annual VIP</h4>
+            <p>Full year of unlimited math ($2.49/mo)</p>
+          </div>
+          <div class="tier-price">
+            <div class="price-val">$29.99</div>
+            <div class="price-cycle">/ year</div>
+          </div>
+        </div>
+
+        <div class="tier-card" data-tier="lifetime">
+          <div class="tier-info">
+            <h4>Lifetime Math God</h4>
+            <p>One-time payment, forever access</p>
+          </div>
+          <div class="tier-price">
+            <div class="price-val">$59.99</div>
+            <div class="price-cycle">once</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promo Code Input -->
+      <div class="promo-bar">
+        <input type="text" class="promo-input" id="promo-input" placeholder="Promo code (e.g. FREEMATH)" autocomplete="off">
+        <button class="promo-btn" id="promo-apply-btn">Apply</button>
+      </div>
+      <div class="promo-feedback" id="promo-feedback"></div>
+
+      <!-- Subscribe CTA -->
+      <button class="paywall-cta" id="paywall-subscribe-btn">
+        <span>Upgrade to VIP Now</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+
+      <div class="paywall-footer-links">
+        <span class="footer-link" id="restore-purchase-link">Restore Purchases</span>
+        <span>•</span>
+        <span class="footer-link">Terms & Privacy</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mock Checkout Modal -->
+  <div class="modal-backdrop" id="checkout-backdrop">
+    <div class="checkout-modal">
+      <div class="checkout-header">
+        <h3>Complete Payment</h3>
+        <button class="paywall-close-btn" id="checkout-close-btn">✕</button>
+      </div>
+
+      <div class="checkout-summary">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span style="color: var(--text-muted);" id="checkout-tier-name">Annual VIP Pass</span>
+          <span style="font-weight: 700; color: #fff;" id="checkout-tier-price">$29.99</span>
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-dim);">
+          Instant activation • 30-day money-back guarantee
+        </div>
+      </div>
+
+      <div class="payment-methods">
+        <div class="pay-method-btn selected">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.76 1.04-1.81.93-2.88-.9.04-1.99.6-2.63 1.36-.57.65-1.07 1.72-.94 2.76 1 .08 2.02-.48 2.64-1.24z"/></svg>
+          Pay
+        </div>
+        <div class="pay-method-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+          Card
+        </div>
+      </div>
+
+      <button class="pay-confirm-btn" id="pay-confirm-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Confirm & Subscribe</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/sound-fx.js"></script>
+  <script src="js/calculator-engine.js"></script>
+  <script src="js/monetization-engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
